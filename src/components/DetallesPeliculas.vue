@@ -15,6 +15,7 @@
             <p class="card-text">
               <small class="text-muted">Puntuación: {{ movie.vote_average }}</small>
             </p>
+            <button @click="closeDetails" class="btn btn-primary">Cerrar</button>
           </div>
         </div>
       </div>
@@ -36,6 +37,10 @@ export default {
   methods: {
     getImageUrl(posterPath) {
       return posterPath ? `https://image.tmdb.org/t/p/w500/${posterPath}` : 'placeholder.jpg'
+    },
+    closeDetails() {
+      // Emitir un evento para notificar al componente padre que se desea cerrar el componente detalles
+      this.$emit('close')
     }
   },
   mounted() {

@@ -1,4 +1,5 @@
 <template>
+  <DetallesPeliculas :movie="selectedMovie" v-if="selectedMovie" @close="closeDetails" />
   <div>
     <h2>Películas Populares</h2>
     <div class="container">
@@ -26,8 +27,6 @@
     </div>
 
     <!-- Mostrar detalles de la película seleccionada utilizando el componente detalles-peliculas -->
-
-    <DetallesPeliculas :movie="selectedMovie" v-if="selectedMovie" />
 
     <!-- También puedes mostrar otros componentes aquí según sea necesario -->
   </div>
@@ -74,6 +73,9 @@ export default {
       // console.log('Mostrando detalles de la película:', movie)
       this.selectedMovie = movie
       // console.log('selectedmovie' + this.selectedMovie.title)
+    },
+    closeDetails() {
+      this.selectedMovie = null // Cambia el estado para cerrar el componente detalles
     },
 
     getImageUrl(posterPath) {
