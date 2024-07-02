@@ -9,6 +9,12 @@
         class="form-control"
         placeholder="Buscar películas por título..."
       />
+      <select v-model="selectedGenre" class="form-select">
+        <option value="">Todos los géneros</option>
+        <option v-for="genre in genres" :key="genre.id" :value="genre.id">
+          {{ genre.name }}
+        </option>
+      </select>
       <button class="btn btn-primary" type="button" @click="searchMovies">Buscar</button>
       <button class="btn btn-primary" type="button" @click="limpiarBusqueda">
         eliminar filtro
@@ -18,7 +24,7 @@
     <div class="container">
       <div class="row">
         <div
-          v-for="(movie, index) in movies"
+          v-for="(movie, index) in filteredMovies"
           :key="movie.id"
           class="col-12 col-md-4"
           @click="showMovieDetails(movie)"
@@ -54,12 +60,23 @@ export default {
   data() {
     return {
       movies: [], // Aquí se almacenarán las películas populares
+      genres: [], // Aquí se almacenarán los géneros de películas
       selectedMovie: null, // Almacena los detalles de la película seleccionada
-      searchQuery: ''
+      searchQuery: '',
+      selectedGenre: ''
     }
   },
   mounted() {
     this.fetchPopularMovies()
+    this.fetchGenres()
+  },
+  computed: {
+    filteredMovies() {
+      if (this.selectedGenre) {
+        return this.movies.filter((movie) => movie.genre_ids.includes(parseInt(this.selectedGenre)))
+      }
+      return this.movies
+    }
   },
   methods: {
     fetchPopularMovies() {
@@ -76,22 +93,35 @@ export default {
           console.error('Error al obtener películas populares:', error)
         })
     },
+    fetchGenres() {
+      axios
+        .get(`${apiUrl}/genre/movie/list`, {
+          params: {
+            api_key: apiKey
+          }
+        })
+        .then((response) => {
+          this.genres = response.data.genres
+        })
+        .catch((error) => {
+          console.error('Error al obtener géneros:', error)
+        })
+    },
     limpiarBusqueda() {
       this.searchQuery = '' // Reinicia la consulta de búsqueda
+      this.selectedGenre = '' // Reinicia el filtro de género
       this.fetchPopularMovies() // Carga las películas populares nuevamente
     },
     searchMovies() {
-      if (this.searchQuery.trim() === '') {
-        // Si la búsqueda está vacía, volver a cargar las películas populares
-        this.fetchPopularMovies()
-      } else {
-        // Realizar búsqueda de películas por título
+      let params = {
+        api_key: apiKey
+      }
+
+      if (this.searchQuery.trim()) {
+        params.query = this.searchQuery
         axios
           .get(`${apiUrl}/search/movie`, {
-            params: {
-              api_key: apiKey,
-              query: this.searchQuery
-            }
+            params
           })
           .then((response) => {
             this.movies = response.data.results
@@ -99,17 +129,16 @@ export default {
           .catch((error) => {
             console.error('Error al buscar películas:', error)
           })
+      } else {
+        this.fetchPopularMovies()
       }
     },
     showMovieDetails(movie) {
-      // console.log('Mostrando detalles de la película:', movie)
       this.selectedMovie = movie
-      // console.log('selectedmovie' + this.selectedMovie.title)
     },
     closeDetails() {
       this.selectedMovie = null // Cambia el estado para cerrar el componente detalles
     },
-
     getImageUrl(posterPath) {
       return posterPath ? `https://image.tmdb.org/t/p/w500/${posterPath}` : 'placeholder.jpg'
     }
