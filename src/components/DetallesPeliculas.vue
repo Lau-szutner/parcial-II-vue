@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container col-6">
     <div v-if="movie" class="card mb-3">
       <div class="row no-gutters">
         <div class="col-md-4">
