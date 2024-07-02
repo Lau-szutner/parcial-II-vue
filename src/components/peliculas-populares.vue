@@ -25,26 +25,18 @@
       </div>
     </div>
 
-    <!-- Mostrar detalles de la película seleccionada utilizando el componente detalles-peliculas -->
-
-    <DetallesPeliculas :movie="selectedMovie" v-if="selectedMovie" />
-
-    <!-- También puedes mostrar otros componentes aquí según sea necesario -->
+    <!-- Mostrar detalles de la película seleccionada -->
+    <peliculas-populares :movie="selectedMovie" v-if="selectedMovie" />
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import DetallesPeliculas from './components/DetallesPeliculas.vue'
-// import PeliculasPopulares from '../src/components/peliculas-populares.vue'
 
 const apiKey = '41e053e60105c1e38139e0027f3a09a9'
 const apiUrl = 'https://api.themoviedb.org/3'
 
 export default {
-  components: {
-    DetallesPeliculas
-  },
   data() {
     return {
       movies: [], // Aquí se almacenarán las películas populares
@@ -69,13 +61,9 @@ export default {
           console.error('Error al obtener películas populares:', error)
         })
     },
-
     showMovieDetails(movie) {
-      // console.log('Mostrando detalles de la película:', movie)
-      this.selectedMovie = movie
-      // console.log('selectedmovie' + this.selectedMovie.title)
+      this.selectedMovie = movie // Almacena los detalles de la película seleccionada
     },
-
     getImageUrl(posterPath) {
       return posterPath ? `https://image.tmdb.org/t/p/w500/${posterPath}` : 'placeholder.jpg'
     }
@@ -84,6 +72,7 @@ export default {
 </script>
 
 <style scoped>
+/* Estilos específicos para este componente */
 .card:hover {
   cursor: pointer;
 }
