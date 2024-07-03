@@ -1,24 +1,29 @@
 <template>
   <DetallesPeliculas :movie="selectedMovie" v-if="selectedMovie" @close="closeDetails" />
-  <div class="container d-flex flex-column align-items-center">
-    <h2 class="m-5">Películas Populares</h2>
-    <div class="input-group mb-3 gap-5">
+  <div class="container d-flex flex-column align-items-center col-12">
+    <h2 class="m-5 text-white">Películas Populares</h2>
+    <div class="input-group mb-3 gap-2 bg-dark p-4 container d-flex flex-column flex-lg-row">
       <input
         type="text"
         v-model="searchQuery"
-        class="form-control"
+        class="form-control w-100 rounded"
         placeholder="Buscar películas por título..."
       />
-      <select v-model="selectedGenre" class="form-select">
+      <select v-model="selectedGenre" class="form-select w-100 rounded">
         <option value="">Todos los géneros</option>
         <option v-for="genre in genres" :key="genre.id" :value="genre.id">
           {{ genre.name }}
         </option>
       </select>
-      <button class="btn btn-primary" type="button" @click="searchMovies">Buscar</button>
-      <button class="btn btn-primary" type="button" @click="limpiarBusqueda">
-        eliminar filtro
-      </button>
+
+      <div class="d-flex col-12 justify-content-between flex-column flex-lg-row gap-2">
+        <button class="btn btn-primary col-12 col-lg-5" type="button" @click="searchMovies">
+          Buscar
+        </button>
+        <button class="btn btn-primary col-12 col-lg-5" type="button" @click="limpiarBusqueda">
+          Eliminar filtro
+        </button>
+      </div>
     </div>
 
     <div class="container">
@@ -27,7 +32,7 @@
           v-for="(movie, index) in filteredMovies"
           :key="movie.id"
           class="col-12 col-md-4"
-          @click="showMovieDetails(movie)"
+          @click="handleMovieClick(movie)"
         >
           <div class="card mb-3">
             <img
@@ -135,12 +140,23 @@ export default {
     },
     showMovieDetails(movie) {
       this.selectedMovie = movie
+      this.scrollToTop() // Llama a la función para hacer scroll hacia arriba
     },
     closeDetails() {
       this.selectedMovie = null // Cambia el estado para cerrar el componente detalles
     },
     getImageUrl(posterPath) {
       return posterPath ? `https://image.tmdb.org/t/p/w500/${posterPath}` : 'placeholder.jpg'
+    },
+    scrollToTop() {
+      // Hacer scroll hacia arriba cuando se muestran detalles de la película
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
+    },
+    handleMovieClick(movie) {
+      this.showMovieDetails(movie)
     }
   }
 }
