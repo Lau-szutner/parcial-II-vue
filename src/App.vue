@@ -64,9 +64,9 @@ export default {
   },
   data() {
     return {
-      movies: [], // Aquí se almacenarán las películas populares
-      genres: [], // Aquí se almacenarán los géneros de películas
-      selectedMovie: null, // Almacena los detalles de la película seleccionada
+      movies: [],
+      genres: [],
+      selectedMovie: null,
       searchQuery: '',
       selectedGenre: ''
     }
@@ -113,9 +113,7 @@ export default {
         })
     },
     limpiarBusqueda() {
-      this.searchQuery = '' // Reinicia la consulta de búsqueda
-      this.selectedGenre = '' // Reinicia el filtro de género
-      this.fetchPopularMovies() // Carga las películas populares nuevamente
+      this.searchQuery = this.selectedGenre = this.fetchPopularMovies()
     },
     searchMovies() {
       let params = {
@@ -140,16 +138,12 @@ export default {
     },
     showMovieDetails(movie) {
       this.selectedMovie = movie
-      this.scrollToTop() // Llama a la función para hacer scroll hacia arriba
     },
-    closeDetails() {
-      this.selectedMovie = null // Cambia el estado para cerrar el componente detalles
-    },
+    closeDetails() {},
     getImageUrl(posterPath) {
       return posterPath ? `https://image.tmdb.org/t/p/w500/${posterPath}` : 'placeholder.jpg'
     },
     scrollToTop() {
-      // Hacer scroll hacia arriba cuando se muestran detalles de la película
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
