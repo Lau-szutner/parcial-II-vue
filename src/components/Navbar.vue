@@ -15,14 +15,15 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
+          <!-- Usa :class y la propiedad active-class para la clase activa -->
           <li class="nav-item">
-            <RouterLink to="/" class="nav-link active" aria-current="page">Home</RouterLink>
+            <RouterLink to="/" class="nav-link" active-class="active">Home</RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink to="/about" class="nav-link">About</RouterLink>
+            <RouterLink to="/about" class="nav-link" active-class="active">About</RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink to="/Detalle" class="nav-link">Detalle</RouterLink>
+            <RouterLink to="/detalle" class="nav-link" active-class="active">Detalle</RouterLink>
           </li>
         </ul>
       </div>
