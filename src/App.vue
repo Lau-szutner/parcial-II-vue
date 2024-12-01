@@ -7,13 +7,11 @@
 
 <script>
 import Navbar from '@/components/Navbar.vue'
-import About from '@/components/About.vue'
 
 export default {
   name: 'App',
   components: {
-    Navbar, // Registra el componente aquí
-    About
+    Navbar
   }
 }
 </script>

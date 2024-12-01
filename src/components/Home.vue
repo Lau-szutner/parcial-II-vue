@@ -34,6 +34,13 @@
           @click="handleMovieClick(movie)"
         >
           <div class="card mb-3">
+            <RouterLink
+              class="nav-link"
+              :to="{ path: '/detalle', query: { movie: JSON.stringify(movie) } }"
+            >
+              Detalle
+            </RouterLink>
+
             <img
               :src="getImageUrl(movie.poster_path)"
               class="card-img-top"
@@ -136,6 +143,7 @@ export default {
       }
     },
     showMovieDetails(movie) {
+      console.log(movie)
       this.selectedMovie = movie
     },
     closeDetails() {},
