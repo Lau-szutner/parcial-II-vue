@@ -27,20 +27,12 @@
 
     <div class="container">
       <div class="row">
-        <div
-          v-for="(movie, index) in filteredMovies"
-          :key="movie.id"
-          class="col-12 col-md-4"
-          @click="handleMovieClick(movie)"
-        >
-          <div class="card mb-3">
-            <RouterLink
-              class="nav-link"
-              :to="{ path: '/detalle', query: { movie: JSON.stringify(movie) } }"
-            >
-              Detalle
-            </RouterLink>
-
+        <div v-for="(movie, index) in filteredMovies" :key="movie.id" class="col-12 col-md-4">
+          <RouterLink
+            class="card mb-3"
+            :to="{ path: '/detalle', query: { movie: JSON.stringify(movie) } }"
+            style="text-decoration: none; color: inherit"
+          >
             <img
               :src="getImageUrl(movie.poster_path)"
               class="card-img-top"
@@ -50,7 +42,7 @@
               <h5 class="card-title">{{ movie.title }}</h5>
               <p class="card-text">{{ movie.overview }}</p>
             </div>
-          </div>
+          </RouterLink>
         </div>
       </div>
     </div>
@@ -119,7 +111,8 @@ export default {
         })
     },
     limpiarBusqueda() {
-      this.searchQuery = this.selectedGenre = this.fetchPopularMovies()
+      this.searchQuery = this.selectedGenre = ''
+      this.fetchPopularMovies()
     },
     searchMovies() {
       let params = {
@@ -164,7 +157,11 @@ export default {
 </script>
 
 <style scoped>
-.card:hover {
+.card {
   cursor: pointer;
+  transition: transform 0.2s;
+}
+.card:hover {
+  transform: scale(1.05);
 }
 </style>
