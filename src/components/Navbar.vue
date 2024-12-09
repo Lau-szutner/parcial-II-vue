@@ -19,9 +19,9 @@
           <li class="nav-item">
             <RouterLink to="/" class="nav-link" active-class="active">Home</RouterLink>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <RouterLink to="/about" class="nav-link" active-class="active">About</RouterLink>
-          </li>
+          </li> -->
           <li class="nav-item">
             <RouterLink to="/detalle" class="nav-link" active-class="active">Detalle</RouterLink>
           </li>
