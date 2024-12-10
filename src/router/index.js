@@ -7,7 +7,7 @@ import Favoritos from '@/components/Favoritos.vue'
 const routes = [
   { path: '/', component: Home },
   { path: '/about', component: About },
-  { path: '/favoritos', component: Favoritos },
+  { path: '/favoritos', name: 'Favoritos', component: Favoritos, props: true },
   {
     path: '/detalle',
     name: 'Detalle',

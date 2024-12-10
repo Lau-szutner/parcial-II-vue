@@ -24,25 +24,40 @@
         </button>
       </div>
     </div>
+    <RouterLink :to="{ path: '/favoritos' }" class="btn btn-primary mb-4">
+      Ver Favoritas
+    </RouterLink>
 
     <div class="container">
       <div class="row">
         <div v-for="(movie, index) in filteredMovies" :key="movie.id" class="col-12 col-md-4">
-          <RouterLink
-            class="card mb-3"
-            :to="{ path: '/detalle', query: { movie: JSON.stringify(movie) } }"
-            style="text-decoration: none; color: inherit"
-          >
-            <img
-              :src="getImageUrl(movie.poster_path)"
-              class="card-img-top"
-              alt="Poster de la película"
-            />
-            <div class="card-body">
-              <h5 class="card-title">{{ movie.title }}</h5>
-              <p class="card-text">{{ movie.overview }}</p>
+          <div class="card mb-4 shadow-sm">
+            <RouterLink
+              :to="{ path: '/detalle', query: { movie: JSON.stringify(movie) } }"
+              style="text-decoration: none; color: inherit"
+            >
+              <img
+                :src="getImageUrl(movie.poster_path)"
+                class="card-img-top"
+                alt="Poster de la película"
+              />
+              <div class="card-body">
+                <h5 class="card-title">{{ movie.title }}</h5>
+                <p class="card-text text-muted">
+                  {{
+                    movie.overview.length > 100
+                      ? movie.overview.slice(0, 100) + '...'
+                      : movie.overview
+                  }}
+                </p>
+              </div>
+            </RouterLink>
+            <div class="card-footer bg-light d-flex justify-content-center">
+              <button class="btn btn-outline-primary w-75" @click="toggleFavorite(movie)">
+                {{ isFavorite(movie) ? 'Eliminar de Favoritos' : 'Agregar a Favoritos' }}
+              </button>
             </div>
-          </RouterLink>
+          </div>
         </div>
       </div>
     </div>
@@ -51,20 +66,16 @@
 
 <script>
 import axios from 'axios'
-// import DetallesPeliculas from './components/DetallesPeliculas.vue'
 
 const apiKey = '41e053e60105c1e38139e0027f3a09a9'
 const apiUrl = 'https://api.themoviedb.org/3'
 
 export default {
-  components: {
-    // DetallesPeliculas
-  },
   data() {
     return {
       movies: [],
       genres: [],
-      selectedMovie: null,
+      favorites: [], // Lista de películas favoritas
       searchQuery: '',
       selectedGenre: ''
     }
@@ -72,13 +83,25 @@ export default {
   mounted() {
     this.fetchPopularMovies()
     this.fetchGenres()
+    this.loadFavoritesFromLocalStorage()
   },
   computed: {
     filteredMovies() {
+      let filtered = this.movies
+
       if (this.selectedGenre) {
-        return this.movies.filter((movie) => movie.genre_ids.includes(parseInt(this.selectedGenre)))
+        filtered = filtered.filter((movie) =>
+          movie.genre_ids.includes(parseInt(this.selectedGenre))
+        )
       }
-      return this.movies
+
+      if (this.searchQuery.trim()) {
+        filtered = filtered.filter((movie) =>
+          movie.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+        )
+      }
+
+      return filtered
     }
   },
   methods: {
@@ -116,11 +139,11 @@ export default {
     },
     searchMovies() {
       let params = {
-        api_key: apiKey
+        api_key: apiKey,
+        query: this.searchQuery
       }
 
       if (this.searchQuery.trim()) {
-        params.query = this.searchQuery
         axios
           .get(`${apiUrl}/search/movie`, {
             params
@@ -135,33 +158,56 @@ export default {
         this.fetchPopularMovies()
       }
     },
-    showMovieDetails(movie) {
-      console.log(movie)
-      this.selectedMovie = movie
+    toggleFavorite(movie) {
+      const index = this.favorites.findIndex((fav) => fav.id === movie.id)
+      if (index > -1) {
+        // Si ya está en favoritos, la eliminamos
+        this.favorites.splice(index, 1)
+      } else {
+        // Si no está, la agregamos
+        this.favorites.push(movie)
+      }
+      this.saveFavoritesToLocalStorage()
     },
-    closeDetails() {},
+    isFavorite(movie) {
+      return this.favorites.some((fav) => fav.id === movie.id)
+    },
+    saveFavoritesToLocalStorage() {
+      localStorage.setItem('favorites', JSON.stringify(this.favorites))
+    },
+    loadFavoritesFromLocalStorage() {
+      const storedFavorites = localStorage.getItem('favorites')
+      if (storedFavorites) {
+        this.favorites = JSON.parse(storedFavorites)
+      }
+    },
     getImageUrl(posterPath) {
       return posterPath ? `https://image.tmdb.org/t/p/w500/${posterPath}` : 'placeholder.jpg'
-    },
-    scrollToTop() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      })
-    },
-    handleMovieClick(movie) {
-      this.showMovieDetails(movie)
     }
   }
 }
 </script>
 
-<style scoped>
+<style>
 .card {
-  cursor: pointer;
-  transition: transform 0.2s;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .card:hover {
-  transform: scale(1.05);
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+.card-footer {
+  border-top: 1px solid #ddd;
+}
+.btn-outline-primary {
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+.btn-outline-primary:hover {
+  background-color: #007bff;
+  color: #fff;
 }
 </style>
