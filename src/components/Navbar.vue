@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <RouterLink to="/" class="navbar-brand">My App</RouterLink>
+      <RouterLink to="/" class="navbar-brand">My To-do List</RouterLink>
       <button
         class="navbar-toggler"
         type="button"
@@ -15,15 +15,17 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-          <!-- Usa :class y la propiedad active-class para la clase activa -->
           <li class="nav-item">
             <RouterLink to="/" class="nav-link" active-class="active">Home</RouterLink>
           </li>
-          <!-- <li class="nav-item">
-            <RouterLink to="/about" class="nav-link" active-class="active">About</RouterLink>
-          </li> -->
+
           <li class="nav-item">
             <RouterLink to="/detalle" class="nav-link" active-class="active">Detalle</RouterLink>
+          </li>
+          <li class="nav-item">
+            <RouterLink to="/favoritos" class="nav-link" active-class="active"
+              >Favoritos</RouterLink
+            >
           </li>
         </ul>
       </div>
