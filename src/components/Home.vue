@@ -24,9 +24,9 @@
         </button>
       </div>
     </div>
-    <RouterLink :to="{ path: '/favoritos' }" class="btn btn-primary mb-4">
+    <!-- <RouterLink :to="{ path: '/favoritos' }" class="btn btn-primary mb-4">
       Ver Favoritas
-    </RouterLink>
+    </RouterLink> -->
 
     <div class="container">
       <div class="row">
