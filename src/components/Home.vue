@@ -24,9 +24,6 @@
         </button>
       </div>
     </div>
-    <!-- <RouterLink :to="{ path: '/favoritos' }" class="btn btn-primary mb-4">
-      Ver Favoritas
-    </RouterLink> -->
 
     <div class="container">
       <div class="row">
@@ -83,25 +80,13 @@ export default {
   mounted() {
     this.fetchPopularMovies()
     this.fetchGenres()
-    this.loadFavoritesFromLocalStorage()
   },
   computed: {
     filteredMovies() {
-      let filtered = this.movies
-
       if (this.selectedGenre) {
-        filtered = filtered.filter((movie) =>
-          movie.genre_ids.includes(parseInt(this.selectedGenre))
-        )
+        return this.movies.filter((movie) => movie.genre_ids.includes(parseInt(this.selectedGenre)))
       }
-
-      if (this.searchQuery.trim()) {
-        filtered = filtered.filter((movie) =>
-          movie.title.toLowerCase().includes(this.searchQuery.toLowerCase())
-        )
-      }
-
-      return filtered
+      return this.movies
     }
   },
   methods: {
@@ -139,11 +124,11 @@ export default {
     },
     searchMovies() {
       let params = {
-        api_key: apiKey,
-        query: this.searchQuery
+        api_key: apiKey
       }
 
       if (this.searchQuery.trim()) {
+        params.query = this.searchQuery
         axios
           .get(`${apiUrl}/search/movie`, {
             params
@@ -167,19 +152,9 @@ export default {
         // Si no está, la agregamos
         this.favorites.push(movie)
       }
-      this.saveFavoritesToLocalStorage()
     },
     isFavorite(movie) {
       return this.favorites.some((fav) => fav.id === movie.id)
-    },
-    saveFavoritesToLocalStorage() {
-      localStorage.setItem('favorites', JSON.stringify(this.favorites))
-    },
-    loadFavoritesFromLocalStorage() {
-      const storedFavorites = localStorage.getItem('favorites')
-      if (storedFavorites) {
-        this.favorites = JSON.parse(storedFavorites)
-      }
     },
     getImageUrl(posterPath) {
       return posterPath ? `https://image.tmdb.org/t/p/w500/${posterPath}` : 'placeholder.jpg'
