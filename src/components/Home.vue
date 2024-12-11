@@ -1,6 +1,6 @@
 <template>
   <div class="container d-flex flex-column align-items-center col-12">
-    <h2 class="m-5 text-white">Películas Populares</h2>
+    <h1 class="m-5 text-white">Películas Populares</h1>
     <div class="input-group mb-3 gap-2 bg-dark p-4 container d-flex flex-column flex-lg-row">
       <input
         type="text"
@@ -15,11 +15,9 @@
         </option>
       </select>
 
-      <div class="d-flex col-12 justify-content-between flex-column flex-lg-row gap-2">
-        <button class="btn btn-primary col-12 col-lg-5" type="button" @click="searchMovies">
-          Buscar
-        </button>
-        <button class="btn btn-primary col-12 col-lg-5" type="button" @click="limpiarBusqueda">
+      <div class="d-flex col-12 justify-content-between flex-column gap-2">
+        <button class="btn btn-primary col-12" type="button" @click="searchMovies">Buscar</button>
+        <button class="btn btn-primary col-12" type="button" @click="limpiarBusqueda">
           Eliminar filtro
         </button>
       </div>
