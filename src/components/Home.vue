@@ -84,6 +84,7 @@ export default {
       if (this.selectedGenre) {
         return this.movies.filter((movie) => movie.genre_ids.includes(parseInt(this.selectedGenre)))
       }
+      console.log(this.movies)
       return this.movies
     }
   },
