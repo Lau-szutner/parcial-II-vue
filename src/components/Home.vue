@@ -147,10 +147,20 @@ export default {
       if (index > -1) {
         // Si ya está en favoritos, la eliminamos
         this.favorites.splice(index, 1)
-        console.log(this.favorites)
       } else {
         // Si no está, la agregamos
         this.favorites.push(movie)
+      }
+      // Guardar favoritos en localStorage
+      this.saveFavoritesToLocalStorage()
+    },
+    saveFavoritesToLocalStorage() {
+      localStorage.setItem('favorites', JSON.stringify(this.favorites))
+    },
+    loadFavoritesFromLocalStorage() {
+      const storedFavorites = localStorage.getItem('favorites')
+      if (storedFavorites) {
+        this.favorites = JSON.parse(storedFavorites)
       }
     },
     isFavorite(movie) {
