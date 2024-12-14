@@ -48,7 +48,7 @@
               </div>
             </RouterLink>
             <div class="card-footer bg-light d-flex justify-content-center">
-              <button class="btn btn-outline-primary w-75" @click="toggleFavorite(movie)">
+              <button class="btn btn-outline-warning w-75" @click="toggleFavorite(movie)">
                 {{ isFavorite(movie) ? 'Eliminar de Favoritos' : 'Agregar a Favoritos' }}
               </button>
             </div>
@@ -147,6 +147,7 @@ export default {
       if (index > -1) {
         // Si ya está en favoritos, la eliminamos
         this.favorites.splice(index, 1)
+        console.log(this.favorites)
       } else {
         // Si no está, la agregamos
         this.favorites.push(movie)
