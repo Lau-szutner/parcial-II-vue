@@ -16,8 +16,8 @@
       </select>
 
       <div class="d-flex col-12 justify-content-between flex-column gap-2">
-        <button class="btn btn-primary col-12" type="button" @click="searchMovies">Buscar</button>
-        <button class="btn btn-primary col-12" type="button" @click="limpiarBusqueda">
+        <button class="btn col-12 bg-warning" type="button" @click="searchMovies">Buscar</button>
+        <button class="btn col-12 bg-warning" type="button" @click="limpiarBusqueda">
           Eliminar filtro
         </button>
       </div>
