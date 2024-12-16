@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg bg-warning">
     <div class="container-fluid">
-      <RouterLink to="/" class="navbar-brand">My To-do List</RouterLink>
+      <RouterLink to="/" class="navbar-brand">My movies app</RouterLink>
       <button
         class="navbar-toggler"
         type="button"
